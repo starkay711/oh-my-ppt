@@ -22,7 +22,7 @@ import {
 import { backfillUserStylePackagesFromDatabase, setStyleDb } from '../styles/catalog'
 import { createRuntimeCredentials } from '../ipc/runtime/credentials'
 import { applyProxy } from '../utils/proxy'
-import { configureLogging, scheduleUpdateNotification } from './lifecycle'
+import { configureLogging } from './lifecycle'
 import { createTray, destroyTray, showTrayHideBalloon } from './tray'
 import { createMainWindow, showMainWindow } from './window'
 import { attachWindowControlStateEvents, registerWindowControlHandlers } from './window-controls'
@@ -128,7 +128,7 @@ export class MainApplication {
     registerLocalAssetProtocol()
     setupIPC(window, this.db, this.agentManager)
     registerWindowControlHandlers()
-    scheduleUpdateNotification(window)
+    // Private fork: update check removed, no call to scheduleUpdateNotification.
 
     try {
       const savedSettings = await this.db.getAllSettings()
