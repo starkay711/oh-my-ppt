@@ -791,21 +791,14 @@ export const HtmlEditorCanvas = forwardRef<
         }
       },
       async ensureChartJs(): Promise<boolean> {
+        // Private fork: never load Chart.js from a CDN. Only use the copy
+        // already present in the page (bundled locally); otherwise report
+        // unavailable instead of fetching it from the internet.
         const wv = webviewRef.current
         if (!wv || !canExecuteJavaScript(wv)) return false
         try {
           const has = await wv.executeJavaScript('typeof window.Chart === "function"')
-          if (has) return true
-          const loaded = await wv.executeJavaScript(
-            `new Promise(function(resolve) {
-              var s = document.createElement('script');
-              s.src = 'https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.1/chart.umd.min.js';
-              s.onload = function() { resolve(true); };
-              s.onerror = function() { resolve(false); };
-              document.head.appendChild(s);
-            })`
-          )
-          return Boolean(loaded)
+          return Boolean(has)
         } catch {
           return false
         }
