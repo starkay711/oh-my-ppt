@@ -119,8 +119,7 @@ deb:
     - libxtst6
     - xdg-utils
 npmRebuild: false
-publish:
-  provider: generic
-  url: https://example.com/auto-updates
+# Private fork: no auto-update publish channel. The upstream placeholder
+# publish block (generic provider) is removed entirely.
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
